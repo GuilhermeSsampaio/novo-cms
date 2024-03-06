@@ -58,52 +58,52 @@ services:
     networks:
       - stack
 
-  backup:
-    image: postgres:latest
-    restart: "no"
-    environment:
-      POSTGRES_DB: strapi
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
-    command: ["bash", "-c", "pg_dump -h banco -U postgres strapi > /backup/backup.sql"]
-    volumes:
-      - backup-data:/backup
-    depends_on:
-      - banco
-    networks:
-      - stack
+  # backup:
+  #   image: postgres:latest
+  #   restart: "no"
+  #   environment:
+  #     POSTGRES_DB: strapi
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: root
+  #   command: ["bash", "-c", "pg_dump -h banco -U postgres strapi > /backup/backup.sql"]
+  #   volumes:
+  #     - backup-data:/backup
+  #   depends_on:
+  #     - banco
+  #   networks:
+  #     - stack
 
-  sanitize:
-    image: postgres:latest
-    restart: "no"
-    command: ["bash", "-c", "pg_dump -h banco -U postgres strapi --schema-only > /backup/sanitized_backup.sql"]
-    depends_on:
-      - banco
-    links:
-      - banco
-    networks:
-      - stack
-    profiles:
-      - cli
+  # sanitize:
+  #   image: postgres:latest
+  #   restart: "no"
+  #   command: ["bash", "-c", "pg_dump -h banco -U postgres strapi --schema-only > /backup/sanitized_backup.sql"]
+  #   depends_on:
+  #     - banco
+  #   links:
+  #     - banco
+  #   networks:
+  #     - stack
+  #   profiles:
+  #     - cli
 
-  restore:
-    image: postgres:latest
-    restart: "no"
-    environment:
-      POSTGRES_DB: strapi
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
-    command: ["bash", "-c", "psql -h banco -U postgres -d strapi < /backup/backup.sql"]
-    volumes:
-      - backup-data:/backup
-    depends_on:
-      - banco
-    links:
-      - banco
-    networks:
-      - stack
-    profiles:
-      - cli
+  # restore:
+  #   image: postgres:latest
+  #   restart: "no"
+  #   environment:
+  #     POSTGRES_DB: strapi
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: root
+  #   command: ["bash", "-c", "psql -h banco -U postgres -d strapi < /backup/backup.sql"]
+  #   volumes:
+  #     - backup-data:/backup
+  #   depends_on:
+  #     - banco
+  #   links:
+  #     - banco
+  #   networks:
+  #     - stack
+  #   profiles:
+  #     - cli
 
 networks:
   stack:
@@ -112,7 +112,7 @@ networks:
 volumes:
   banco-data:
       name: ${banco-data}
-  minio-data:
-      name: ${minio-data}
+  # minio-data:
+  #     name: ${minio-data}
   backup-data:
       name: ${backup-data}
