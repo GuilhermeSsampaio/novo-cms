@@ -1,0 +1,56 @@
+{
+    "_boilerplate": "strapi app cms",
+    "platform": "javascript",
+    "label": "Instância básica do strapi como cms",
+    "description": "Sistema para controle de gestão de conteudo de APIs.",
+    "references": [
+      { "label": "Site oficial do Strapi", "url": "https://strapi.io/"}
+    ],
+    "maintainers": [
+      { "name": "Guilherme Silva Sampaio", "email": "guilhermessampaio20@gmail.com", "phone": "+55 (67) 9 8194-2502" }
+    ],
+    "variables": {
+        "default": [
+          { "name": "PORT", "type": "PORT" },
+          { "name": "HOST", "type": "TEXT" },
+          { "name": "APP_KEYS", "type": "TEXT" },
+          { "name": "API_TOKEN_SALT", "type": "SECRET" },
+          { "name": "ADMIN_JWT_SECRET", "type": "SECRET" },
+          { "name": "TRANSFER_TOKEN_SALT", "type": "SECRET" },
+
+          // Database
+          { "name": "DATABASE_CLIENT", "type": "TEXT"},
+          { "name": "DATABASE_HOST", "type": "TEXT"},
+          { "name": "DATABASE_PORT", "type": "TEXT"},
+          { "name": "DATABASE_NAME", "type": "TEXT"},
+          { "name": "DATABASE_USERNAME", "type": "TEXT"},
+          { "name": "DATABASE_PASSWORD", "type": "PASSWORD"},
+          { "name": "DATABASE_SSL", "type": "TEXT"},
+
+          // JWT secret
+          { "name": "JWT_SECRET", "type": "TEXT"},
+
+          // Sendgrid
+          { "name": "SMTP_HOST", "type": "TEXT" },
+          { "name": "SMTP_PORT", "type": "PORT" },
+          { "name": "SMTP_USERNAME", "type": "TEXT" },
+          { "name": "SENDGRID_API_KEY", "type": "SECRET"},
+
+          // Minio
+          { "name": "MINIO_ENDPOINT", "type": "TEXT" },
+          { "name": "MINIO_PORT", "type": "PORT" },
+          { "name": "MINIO_SECURE", "type": "TEXT" },
+          { "name": "MINIO_ACCESS_KEY", "type": "SECRET" },
+          { "name": "MINIO_SECRET_KEY", "type": "SECRET" },
+          { "name": "MINIO_BUCKET", "type": "TEXT" },
+          { "name": "MINIO_PRIVATE", "type": "TEXT" },
+          { "name": "MINIO_EXPIRY", "type": "TEXT" },
+          { "name": "MINIO_USE_SSL", "type": "TEXT" },
+          { "name": "MINIO_FOLDER", "type": "TEXT" }
+        ],
+      "alpha": [],
+      "beta": [],
+      "release": []
+    },
+    "orchestrators": [ "DockerCompose" ]
+  }

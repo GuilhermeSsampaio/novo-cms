@@ -1,0 +1,118 @@
+version: '3.1'
+
+services:
+  banco:
+    image: postgres:latest
+    container_name: meu-postgres-container
+    environment:
+      POSTGRES_DB: strapi
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+    volumes:
+      - banco-data:/var/lib/postgresql/data
+    networks:
+      - stack
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "strapi", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # minio:
+  #   image: minio/minio
+  #   container_name: minio
+  #   environment:
+  #     - MINIO_ROOT_USER=minioadmin
+  #     - MINIO_ROOT_PASSWORD=minioadmin
+  #     - MINIO_BROWSER=on
+  #     - MINIO_OPTS=CORS_ALLOWED_HEADERS=x-requested-with,authorization,Content-Type,Accept,Origin
+  #     - MINIO_OPTS=CORS_ALLOWED_METHODS=GET,PUT,POST,DELETE
+  #     - MINIO_OPTS=CORS_ALLOWED_ORIGINS=http://localhost:1337
+  #   volumes:
+  #     - minio-data:/data
+  #   ports:
+  #     - "9000:9000"
+  #     - "9001:9001"
+  #   command: server /data --console-address ":9001"
+  #   networks:
+  #     - stack
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 3
+
+  strapi:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "1337:1337"
+    depends_on:
+      - banco
+      # - minio
+    volumes:
+      - ./data/strapi:/srv/app
+    networks:
+      - stack
+
+  backup:
+    image: postgres:latest
+    restart: "no"
+    environment:
+      POSTGRES_DB: strapi
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    command: ["bash", "-c", "pg_dump -h banco -U postgres strapi > /backup/backup.sql"]
+    volumes:
+      - backup-data:/backup
+    depends_on:
+      - banco
+    networks:
+      - stack
+
+  sanitize:
+    image: postgres:latest
+    restart: "no"
+    command: ["bash", "-c", "pg_dump -h banco -U postgres strapi --schema-only > /backup/sanitized_backup.sql"]
+    depends_on:
+      - banco
+    links:
+      - banco
+    networks:
+      - stack
+    profiles:
+      - cli
+
+  restore:
+    image: postgres:latest
+    restart: "no"
+    environment:
+      POSTGRES_DB: strapi
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    command: ["bash", "-c", "psql -h banco -U postgres -d strapi < /backup/backup.sql"]
+    volumes:
+      - backup-data:/backup
+    depends_on:
+      - banco
+    links:
+      - banco
+    networks:
+      - stack
+    profiles:
+      - cli
+
+networks:
+  stack:
+
+
+volumes:
+  banco-data:
+      name: ${banco-data}
+  minio-data:
+      name: ${minio-data}
+  backup-data:
+      name: ${backup-data}

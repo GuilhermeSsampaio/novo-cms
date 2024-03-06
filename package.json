@@ -11,6 +11,8 @@
   },
   "devDependencies": {},
   "dependencies": {
+    "@_sh/strapi-plugin-ckeditor": "^2.1.1",
+    "@ckeditor/ckeditor5-markdown-gfm": "^41.2.0",
     "@sendgrid/mail": "^8.1.1",
     "@strapi/plugin-cloud": "4.20.3",
     "@strapi/plugin-i18n": "4.20.3",
