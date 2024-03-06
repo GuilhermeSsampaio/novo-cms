@@ -1,20 +1,51 @@
 /*
- *
  * HomePage
  *
  */
+import React from "react";
+import { Box, Grid, GridItem, Layout, Main } from "@strapi/design-system";
+import { Helmet } from "react-helmet";
+import { FormattedMessage } from "react-intl";
+import styled from "styled-components";
 
-import React from 'react';
-// import PropTypes from 'prop-types';
-import pluginId from '../../pluginId';
+import cornerOrnamentPath from "./assets/corner-ornament.svg";
 
-const HomePage = () => {
+import ContentBlocks from "../../components/ContentBlocks";
+
+const LogoContainer = styled(Box)`
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  img {
+    width: ${150 / 16}rem;
+  }
+`;
+
+export const HomePageCE = () => {
   return (
-    <div>
-      <h1>{pluginId}&apos;s HomePage</h1>
-      <p>Happy coding</p>
-    </div>
+    <Layout>
+      <FormattedMessage id="HomePage.helmet.title" defaultMessage="Homepage">
+        {(title) => <Helmet title={title[0]} />}
+      </FormattedMessage>
+      <Main>
+        <LogoContainer>
+          <img alt="" aria-hidden src={cornerOrnamentPath} />
+        </LogoContainer>
+        <Box padding={10}>
+          <Grid>
+            <GridItem col={12}>
+              <ContentBlocks />
+            </GridItem>
+          </Grid>
+        </Box>
+      </Main>
+    </Layout>
   );
 };
 
-export default HomePage;
+function HomePageSwitch() {
+  return <HomePageCE />;
+}
+
+export default HomePageSwitch;
